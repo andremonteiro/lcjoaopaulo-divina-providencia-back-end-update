@@ -71,6 +71,7 @@ module.exports = function (app) {
                 });
             }
         } catch (e) {
+            console.log(e)
             return res.status(500).json({
                 errors: e.message,
             });
@@ -95,15 +96,22 @@ module.exports = function (app) {
         }
     }
 
-
-    _self.getUser = async (req, res, next) => {
-        // return res.status(200).json({ uri: "exituser.email" });
+    
+    _self.updatePassword = async (req, res, next) => {
         try{
-            const exituser = await User.findOne({ where: { 'email': "test@a.com" } });
-
-            return res.status(200).json({ uri: exituser.email });
+            const exituser = await User.findOne({ where: { 'email': req.body.email } });
+            if(exituser){
+                const salt = await bcryptjs.genSalt(10);
+                const hash = await bcryptjs.hash(req.body.password, salt);
+                User.update(
+                    { senha: hash },
+                    { where: { 'email': req.body.email } }
+                )
+                return res.status(200).json({ message: "success!" });
+            }else{
+                return res.status(500).json({ message: "error!" });
+            }
         }catch(e){
-            return res.status(200).json({ uri: e });
             return res.status(500).json({
                 errors: e,
             });

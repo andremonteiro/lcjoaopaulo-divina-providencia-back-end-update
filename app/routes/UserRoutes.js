@@ -6,6 +6,6 @@ module.exports = function (app) {
         .post(UserController.updateAvatar);
     app.route('/api/getAvatar')
         .post(UserController.getAvatar);
-    app.route('/api/getUser')
-        .get(UserController.getUser);
+    app.route('/api/updatePassword')
+        .post(UserController.updatePassword);
 }

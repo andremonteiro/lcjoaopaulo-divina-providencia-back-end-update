@@ -42,7 +42,6 @@ module.exports = function (app) {
             return res.json({ token, user: { nome: user.nome, id, email } });
 
         } catch (e) {
-            console.log(e);
             return res.status(500).json({
                 errors: e.message,
             });
