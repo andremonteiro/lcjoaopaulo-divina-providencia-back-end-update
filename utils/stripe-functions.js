@@ -39,7 +39,7 @@ updateSubscription = async (requestBody) => {
   const subscription = await stripe.subscriptions.retrieve(requestBody.subscription);
   return stripe.subscriptions.update(requestBody.subscription, {
     cancel_at_period_end: false,
-    proration_behavior: 'create_prorations',
+    proration_behavior: 'none',
     items: [{
       id: subscription.items.data[0].id,
       price: requestBody.updateplan,

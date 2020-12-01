@@ -52,6 +52,7 @@ module.exports = function (app) {
      * @method POST
      */
     _self.createUser = async (req, res) => {
+        console.log("I am here");
         try {
             const exituser = await User.findOne({ where: { 'email': req.body.email } });
             if(!exituser){
@@ -66,12 +67,13 @@ module.exports = function (app) {
                 return res.status(200).json({ id, nome, email, avatar });
             }
             else{
+                
                 return res.status(401).json({
                     errors: 'This user is already registered',
                 });
             }
         } catch (e) {
-            console.log(e)
+            console.log(e);
             return res.status(500).json({
                 errors: e.message,
             });

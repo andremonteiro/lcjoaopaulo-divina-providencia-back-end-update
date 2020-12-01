@@ -20,7 +20,6 @@ module.exports = function () {
     //     timezone: '-03:00',
     //     logging: console.log
     // };
-
     const connector = new Sequelize(config.database, config.user, config.pass, {
         host: config.host,
         dialect: config.adapter,
