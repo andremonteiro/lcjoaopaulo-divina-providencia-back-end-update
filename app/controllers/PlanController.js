@@ -12,8 +12,7 @@ module.exports = function (app) {
     */
     _self.getAllPlanList = async (req, res, next) => {
         try{    
-            STRIPE_API.getAllProductsAndPlans().then(products => {
-                console.log(products);
+            STRIPE_API.getAllProductsAndPlans(req.body.env).then(products => {
                 products = products.filter(product => {
                     return product.plans.length > 0;
                 });

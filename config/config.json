@@ -7,5 +7,8 @@
     "dialect": "postgres",
     "operatorsAliases": false
   },
-  "secret": "sk_test_51HrNBMANyDSxihtZlbbKAaMMQvwqVCP9RChV0S2bo5lyYugTZqbIRjYcu57wQ8PEmPtHGi6XuoCYLeMOSWPh7M4Y00loofWKz7"
+  "secret": {
+    "test": "sk_test_51HrNBMANyDSxihtZlbbKAaMMQvwqVCP9RChV0S2bo5lyYugTZqbIRjYcu57wQ8PEmPtHGi6XuoCYLeMOSWPh7M4Y00loofWKz7",
+    "live": "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"
+  }
 }

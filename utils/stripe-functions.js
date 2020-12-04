@@ -1,13 +1,15 @@
 const { secret } = require('../config/config.json');
 
-const stripe = require('stripe')(secret);
+const stripe_test = require('stripe')(secret.test);
+const stripe_live = require('stripe')(secret.live);
 const UTILS = require('./format-numbers.js');
 
-function getAllProductsAndPlans() {
+function getAllProductsAndPlans(flag) {
+    const stripe = flag? stripe_test: stripe_live;
     return Promise.all(
         [
-        stripe.products.list({}),
-        stripe.plans.list({})
+          stripe.products.list({}),
+          stripe.plans.list({})
         ]
     ).then(stripeData => {
         var products = stripeData[0].data;
@@ -36,6 +38,8 @@ function getAllProductsAndPlans() {
 }
 
 updateSubscription = async (requestBody) => {
+  const stripe = requestBody.env == "test"? stripe_test: stripe_live;
+
   const subscription = await stripe.subscriptions.retrieve(requestBody.subscription);
   return stripe.subscriptions.update(requestBody.subscription, {
     cancel_at_period_end: false,
@@ -48,6 +52,8 @@ updateSubscription = async (requestBody) => {
 }
 
 function createCustomerAndSubscription(requestBody) {
+    const stripe = requestBody.env == "test"? stripe_test: stripe_live;
+    
     return stripe.customers.create({
       source: requestBody.stripeToken.id,
       email: requestBody.customerEmail
@@ -64,6 +70,8 @@ function createCustomerAndSubscription(requestBody) {
   }
 
 function getSubscription(requestBody){
+  const stripe = requestBody.env == "test"? stripe_test: stripe_live;
+
   return stripe.subscriptions.retrieve(requestBody.subscription);
 }
 

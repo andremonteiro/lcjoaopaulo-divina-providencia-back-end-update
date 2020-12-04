@@ -23,10 +23,15 @@ module.exports = function (app) {
             type: Sequelize.STRING,
             allowNull: false
         },
-        subscription: {
+        subscription_test: {
+            type: Sequelize.STRING,
+            allowNull: false
+        },
+        subscription_live: {
             type: Sequelize.STRING,
             allowNull: false
         }
+
     }, {
         createdAt: false,
         updatedAt: false,

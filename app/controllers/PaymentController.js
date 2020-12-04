@@ -14,20 +14,37 @@ module.exports = function (app) {
      * @method GET
      */
     _self.pay = async (req, res) => {
+      const flag = req.body.env;
       STRIPE_API.createCustomerAndSubscription(req.body).then((responseData) => {
-        User.update(
-          { subscription: responseData.id },
-          { where: { 'email': req.body.customerEmail } }
-        )
-        .then( result=> {
-          return res.status(200).json({ message: 'sucess' });
-        })
-        .catch( err=> {
-            return res.status(500).json({
-                errors: err,
-            });
-        })
+        if(flag == "test"){
+          User.update(
+            { subscription_test: responseData.id },
+            { where: { 'email': req.body.customerEmail } }
+          )
+          .then( result=> {
+            return res.status(200).json({ message: 'sucess' });
+          })
+          .catch( err=> {
+              return res.status(500).json({
+                  errors: err,
+              });
+          })
+        }else{
+          User.update(
+            { subscription_live: responseData.id },
+            { where: { 'email': req.body.customerEmail } }
+          )
+          .then( result=> {
+            return res.status(200).json({ message: 'sucess' });
+          })
+          .catch( err=> {
+              return res.status(500).json({
+                  errors: err,
+              });
+          })
+        }
       }).catch(err => {
+        console.log(err);
         return res.status(500).json({
           errors: err.message,
         });
