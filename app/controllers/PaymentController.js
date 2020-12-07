@@ -1,11 +1,12 @@
 const config = require("../../config/config.json")
 
-const stripe = require('stripe')(config.secret);
-const STRIPE_API = require('../../utils/stripe-functions.js');
+const STRIPE_API = require('../../utils/stripe-functions.js');  
 
 module.exports = function (app) {
     const _self = {};
     const User = app.models.User;
+    const Key = app.models.Enviroment;
+
     /**
      * get
      * @param {Object} req
@@ -13,7 +14,9 @@ module.exports = function (app) {
      * @route /api/token
      * @method GET
      */
+    
     _self.pay = async (req, res) => {
+      await init();
       const flag = req.body.env;
       STRIPE_API.createCustomerAndSubscription(req.body).then((responseData) => {
         if(flag == "test"){
@@ -44,7 +47,6 @@ module.exports = function (app) {
           })
         }
       }).catch(err => {
-        console.log(err);
         return res.status(500).json({
           errors: err.message,
         });
@@ -52,6 +54,7 @@ module.exports = function (app) {
     }
 
     _self.update = async (req, res) => {
+      await init();
       STRIPE_API.updateSubscription(req.body).then(() => {
         return res.status(200).json({ message: 'sucess' });
       }).catch(err => {
@@ -62,6 +65,8 @@ module.exports = function (app) {
     }
 
     _self.exitplan = async (req, res) => {
+      await init();
+
       STRIPE_API.getSubscription(req.body).then((data)=>{
         return res.status(200).json({ responsedata: data.items.data[0]['plan'] });
       }).catch(err => {
@@ -70,6 +75,14 @@ module.exports = function (app) {
         });
       })
     }
+
+    init = async () => {
+      const { count, rows } = await Key.findAndCountAll({ where: { flag:"secret" } });
+      const temp = {'test':'', 'live': ''};
+      temp.live = rows[0].dataValues.key;
+      temp.test = rows[1].dataValues.key;
+      STRIPE_API.initStripe(temp);
+     }
 
     return _self;
 }
