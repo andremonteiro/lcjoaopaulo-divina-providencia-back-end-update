@@ -79,8 +79,8 @@ module.exports = function (app) {
     init = async () => {
       const { count, rows } = await Key.findAndCountAll({ where: { flag:"secret" } });
       const temp = {'test':'', 'live': ''};
-      temp.live = rows[0].dataValues.key;
-      temp.test = rows[1].dataValues.key;
+      temp.live = rows[1].dataValues.key;
+      temp.test = rows[0].dataValues.key;
       STRIPE_API.initStripe(temp);
      }
 
