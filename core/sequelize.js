@@ -10,16 +10,7 @@ module.exports = function () {
         timezone: '-03:00',
         logging: console.log
     };
-    // const config = {
-    //     host: 'localhost',
-    //     database: 'divina-providencia',
-    //     user: 'postgres',
-    //     pass: 'adminpwd',
-    //     adapter: 'postgres',
-    //     reconnect: true,
-    //     timezone: '-03:00',
-    //     logging: console.log
-    // };
+
     const connector = new Sequelize(config.database, config.user, config.pass, {
         host: config.host,
         dialect: config.adapter,
