@@ -8,10 +8,8 @@ const { request } = require('express');
 
 
 function initStripe(key){
-  console.log(key)
   stripe_live = require('stripe')(key.live);
   stripe_test = require('stripe')(key.test);
-  return 'ok'
 }
 
 function getAllProductsAndPlans(flag) {

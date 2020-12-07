@@ -3,6 +3,19 @@ const STRIPE_API = require('../../utils/stripe-functions.js');
 module.exports = function (app) {
     const _self = {};
     const Key = app.models.Enviroment;
+
+    init = async () => {
+        const temp = {'test':'', 'live': ''};
+        const { count, rows } = await Key.findAndCountAll({ where: { flag:"secret" } });
+        var result = rows.filter(key => key.dataValues.comment == "sk_live");
+        
+        temp.live = result[0].dataValues.key;
+        var result1 = rows.filter(key => key.dataValues.comment == "sk_test");
+        temp.test = result1[0].dataValues.key;
+        
+        STRIPE_API.initStripe(temp);
+    }
+
     /**
      * getAllPlanList
      * @param {Object} req
@@ -25,14 +38,6 @@ module.exports = function (app) {
                 errors: e.message,
             });
         }
-    }
-
-    init = async () => {
-        const { count, rows } = await Key.findAndCountAll({ where: { flag:"secret" } });
-        const temp = {'test':'', 'live': ''};
-        temp.live = rows[0].dataValues.key;
-        temp.test = rows[1].dataValues.key;
-        STRIPE_API.initStripe(temp);
     }
     
     return _self;
