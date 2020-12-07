@@ -8,7 +8,6 @@ module.exports = function (app) {
         const temp = {'test':'', 'live': ''};
         const { count, rows } = await Key.findAndCountAll({ where: { flag:"secret" } });
         var result = rows.filter(key => key.dataValues.comment == "sk_live");
-        
         temp.live = result[0].dataValues.key;
         var result1 = rows.filter(key => key.dataValues.comment == "sk_test");
         temp.test = result1[0].dataValues.key;
