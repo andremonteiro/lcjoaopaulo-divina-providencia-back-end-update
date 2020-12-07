@@ -59,7 +59,8 @@ module.exports = function (app) {
                 const hash = await bcryptjs.hash(req.body.password, salt);
                 req.body.senha = hash;
                 req.body.avatar = '';
-                req.body.subscription = '';
+                req.body.subscription_test = '';
+                req.body.subscription_live = '';
                 const newUser = await User.create(req.body);
                 const { id, nome, email, avatar } = newUser;
 
